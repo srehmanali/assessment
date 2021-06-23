@@ -5,7 +5,7 @@ import './ListItems.css'
 function ListItemsComponent(props) {
     let [forks, setForks] = useState([]);
     useEffect(() => {
-        fetch(`https://api.github.com/gists/${props.gist.id}/forks`/*, {headers}*/)
+        fetch(`https://api.github.com/gists/${props.gist.id}/forks`)
             .then(response => response.json())
             .then(data => {
                 console.log('forks', data);
@@ -19,8 +19,6 @@ function ListItemsComponent(props) {
                 setForks(fs);
             });
     }, [])
-    //let headers = new Headers();
-    //headers.append('Authorization', 'Basic ' + base64_encode('srehmanali' + ":" + 'Rehmanshah!(git)123'));
 
     return (
         <li>
@@ -28,7 +26,8 @@ function ListItemsComponent(props) {
                 <div className="box">Gist URL: {props.gist.url}</div>
                 <div className="box">FileType: {Object.entries(props.gist.files)[0][1].type}</div>
                 <div className="box grid_wrapper_fork flex_wrapper">
-                    Fork by:
+                    
+                    {(forks === undefined || forks.length == 0) ?  null : "Forks By:"}
                     {
                         forks.map((fork,index) => { return (<div className="fork_box ">{index+1}. {fork.owner.login}</div>) })
                     }
