@@ -1,11 +1,22 @@
 import './Lister.css'
 
+import ListItemsContainer from '../listitems/ListItemsContainer'
 
-function ListerComponent() {
+
+function ListerComponent(props) {
+    console.log("From Lister Component", props.gists);
     return (
         <div className="lister_wrapper">
             <div className="list_wrap">
                 <ul>
+                    {
+                        props.gists.map(gist => {
+                            return (<ListItemsContainer gist={gist} />)
+                        })
+                    }
+                    {/*Foreach loop for each itration*/}
+                </ul>
+                {/* <ul>
                     <li className="main_li">
                         <div className="list">
                             <div className="grid_wrapper">
@@ -46,7 +57,7 @@ function ListerComponent() {
                             </div>
                         </div>
                     </li>
-                </ul>
+                </ul> */}
             </div>
         </div>
     )

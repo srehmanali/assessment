@@ -1,32 +1,37 @@
 import React, { Component } from 'react'
-
+import {encode as base64_encode} from 'base-64';
 import './SearchBar.css'
 
 import SearchBarComponent from './SearchBarComponent'
 
 
 class SearchBarContainer extends Component {
-    state = {
-        username:"",
-        data: [
-            {
-                loading: false,
-                id: "",
-                files: {
-                    filename: "",
-                    language: "",
-                    raw_url: "",
-                    size: "",
-                    type: "",
-                },
-                owner: {
+    constructor(props){
+        super(props)
+        this.state = {
+            username:"",
+            data: [
+                {
+                    loading: false,
                     id: "",
-                    login: "",
-                    avatar_url: ""
+                    files: {
+                        filename: "",
+                        language: "",
+                        raw_url: "",
+                        size: "",
+                        type: "",
+                    },
+                    owner: {
+                        id: "",
+                        login: "",
+                        avatar_url: ""
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
+
+    
     handleChange = (e) =>{
         const {name, value} = e.target
         this.setState({[name]: value})
@@ -39,34 +44,16 @@ class SearchBarContainer extends Component {
 
 
         this.setState({ loading: true })
-        const username = this.state.username
-        fetch('https://api.github.com/users/'+username+'/gists')
+        //let headers = new Headers();
+        //headers.set('Authorization', 'Basic c3JlaG1hbmFsaTpSZWhtYW5zaGFoIShnaXQpMTIz');
+        fetch('https://api.github.com/users/'+ this.state.username +'/gists'/*, {headers}*/)
             .then(response => response.json())
             .then(gists => {
-                const obj = {
-                    username:"",
-                    data: [
-                        {
-                            loading: false,
-                            id: "",
-                            files: {
-                                filename: "",
-                                language: "",
-                                raw_url: "",
-                                size: "",
-                                type: "",
-                            },
-                            owner: {
-                                id: "",
-                                login: "",
-                                avatar_url: ""
-                            }
-                        }
-                    ]
-                }
+                console.log("From Search", gists);
+                this.props.handleData(gists);
                 gists.forEach(element => {
                     
-                console.log(element.files[0])
+                    
                     //obj.data.files.filename = element.file[0].filename
                 });
                 // gists.map(gist=>{
